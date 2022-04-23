@@ -11,7 +11,8 @@ col=db.students
 pp=pprint.PrettyPrinter(width=30,sort_dicts=False)
 #iterating through the documents
 # for doc in col.find({}):
-#     pp.pprint(doc)
+#     pp.pprint(doc)clear
+
 #now using the mongodb regular expresion using the re module as 
 # query={"name.first":re.compile("^re")}
 

@@ -1,0 +1,64 @@
+
+=====================MongoDB Python - Update Operation======================================= 
+
+upsert example (update if record exists or simply insert)
+----------------------------------------------------------------------------------------------
+q = {"rollNo" : 59} #query
+u = {"$set" : {"gender" : "M", "name" : {"first" : "abdul", "last" : "hamid"}}} #update doc
+x = col.update_one(q, u, True) #update statement
+pp.pprint(col.find_one({"rollNo" : 59})) #print the resultant document
+
+Set a value (first name) and increment a numeric value (charges)
+----------------------------------------------------------------------------------------------
+>>> q = {"rollNo" : 54}
+>>> u = {"$set" : {"name.first" : "melena"}, "$inc" : {"charges" : 5}}
+>>> x = col.update_one(q, u)
+>>> print(x.modified_count)
+
+Add a new field (transport) and add an element to array (duplication is possible)
+---------------------------------------------------------------------------------------------
+>>> u = {"$set" : {"transport" : 20}, "$push" : {"games" : "baseball"}}
+>>> x = col.update_one(q, u)
+
+Add a new element to array (Avoiding addition of duplicate element)
+---------------------------------------------------------------------------------------------
+>>> u = {"$addToSet" : {"games" : "chess"}}
+>>> x = col.update_one(q, u)
+
+Remove top (-1) or bottom (1) element from an array
+--------------------------------------------------------------------------------------------
+>>> u = {"$pop" : {"games" : -1}}
+>>> x = col.update_one(q, u)
+
+Remove an element from an array
+--------------------------------------------------------------------------------------------
+>>> u = {"$pull" : {"games" : "chess"}}
+>>> x = col.update_one(q, u)
+
+Remove a field with its value from the document (transport)
+-------------------------------------------------------------------------------------------
+>>> u = {"$unset" : {"transport" : 1}}
+>>> x = col.update_one(q, u)
+
+Add multiple elements to the array without fear of duplication use $addToSet
+------------------------------------------------------------------------------------------
+>>> u = {"$addToSet" : {"games" : {"$each" : ["cricket", "tennis"]}}}
+>>> x = col.update_one(q, u)
+
+Update multiple documents use update_many() function (all above operators can be used)
+-----------------------------------------------------------------------------------------
+>>> q = {"std" : 7}
+>>> for d in col.find(q):
+	pp.pprint(d)
+
+>>> u = {"$inc" : {"charges" : 5}, "$set" : {"transport" : 20},\
+         "$addToSet" : {"games" : {"$each" : ["skiing", "cricket"]}}}
+>>> x = col.update_many(q, u)
+>>> print(x.modified_count)
+>>> for d in col.find(q):
+	pp.pprint(d)
+
+(Note : Study some more operations from the topic of CRUD that we have already studied
+        and try performing those operations on your own for practice and if any question
+        post the same in Q/A section)
+
